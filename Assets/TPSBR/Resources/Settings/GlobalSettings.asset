@@ -15,7 +15,7 @@ MonoBehaviour:
   RunnerPrefab: {fileID: 3427936558554746844, guid: 36ba3480ded34f441a0d952459870465, type: 3}
   LoadingScene: LoadingScene
   MenuScene: Menu
-  SimulateMobileInput: 0
+  SimulateMobileInput: 1
   Agent: {fileID: 11400000, guid: bc0d3b3598b234945b6595818b535e11, type: 2}
   Map: {fileID: 11400000, guid: e4dc9cb883a3cab47a3a7f8fafe0cb18, type: 2}
   Network: {fileID: 11400000, guid: a62d9094641629149b9e79d5232837b2, type: 2}

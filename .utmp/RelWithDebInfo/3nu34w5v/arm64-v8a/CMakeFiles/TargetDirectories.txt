@@ -1,0 +1,8 @@
+/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/3nu34w5v/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/3nu34w5v/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/3nu34w5v/arm64-v8a/GameActivity/CMakeFiles/game.dir
+/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/3nu34w5v/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/3nu34w5v/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
+/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/3nu34w5v/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/3nu34w5v/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/3nu34w5v/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

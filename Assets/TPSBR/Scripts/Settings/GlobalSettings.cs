@@ -8,14 +8,14 @@ namespace TPSBR
 	[CreateAssetMenu(fileName = "GlobalSettings", menuName = "TPSBR/Global Settings")]
 	public class GlobalSettings : ScriptableObject
 	{
-		public NetworkRunner        RunnerPrefab;
-		public string               LoadingScene = "LoadingScene";
-		public string               MenuScene = "Menu";
-		public bool                 SimulateMobileInput;
+		public NetworkRunner RunnerPrefab;
+		public string LoadingScene = "LoadingScene";
+		public string MenuScene = "Menu";
+		public bool SimulateMobileInput = true;
 
-		public AgentSettings        Agent;
-		public MapSettings          Map;
-		public NetworkSettings      Network;
-		public OptionsData          DefaultOptions;
+		public AgentSettings Agent;
+		public MapSettings Map;
+		public NetworkSettings Network;
+		public OptionsData DefaultOptions;
 	}
 }

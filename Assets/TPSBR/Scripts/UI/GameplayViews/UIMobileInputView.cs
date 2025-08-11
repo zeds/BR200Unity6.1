@@ -13,24 +13,24 @@ namespace TPSBR.UI
 	{
 		// PUBLIC MEMBERS
 
-		public Vector2 Move     { get; set; }
-		public Vector2 Look     { get; set; }
-		public bool    Fire     { get; set; }
-		public bool    Jump     { get; set; }
-		public bool    Interact { get; set; }
+		public Vector2 Move { get; set; }
+		public Vector2 Look { get; set; }
+		public bool Fire { get; set; }
+		public bool Jump { get; set; }
+		public bool Interact { get; set; }
 
 		// PRIVATE MEMBERS
 
 		[SerializeField]
-		private bool          _resetMoveJoystickAfterMove;
+		private bool _resetMoveJoystickAfterMove;
 		[SerializeField]
-		private float         _joystickRadius;
+		private float _joystickRadius;
 		[SerializeField]
-		private bool          _moveJoystickOrigin;
+		private bool _moveJoystickOrigin;
 
 		[Header("References")]
 		[SerializeField]
-		private UIBehaviour   _root;
+		private UIBehaviour _root;
 		[SerializeField]
 		private RectTransform _move;
 		[SerializeField]
@@ -44,28 +44,28 @@ namespace TPSBR.UI
 		[SerializeField]
 		private RectTransform _joystick;
 		[SerializeField]
-		private UIBehaviour   _joystickOrigin;
+		private UIBehaviour _joystickOrigin;
 
-		private int     _movePointerID;
+		private int _movePointerID;
 		private Vector2 _movePosition;
 		private Vector2 _moveOrigin;
 
-		private int     _lookPointerID;
+		private int _lookPointerID;
 		private Vector2 _lookPosition;
 		private Vector2 _lookDelta;
-		private bool    _isFiring;
-		private bool    _isJumping;
-		private bool    _isInteracting;
+		private bool _isFiring;
+		private bool _isJumping;
+		private bool _isInteracting;
 
 		private Vector2 _joystickInitialPosition;
 
-		private Rect    _moveRect;
-		private Rect    _lookRect;
+		private Rect _moveRect;
+		private Rect _lookRect;
 
-		private List<int>           _activeTouches   = new List<int>();
-		private List<int>           _inactiveTouches = new List<int>();
-		private List<RectTransform> _ignoredAreas    = new List<RectTransform>();
-		private List<Rect>          _ignoredRects    = new List<Rect>();
+		private List<int> _activeTouches = new List<int>();
+		private List<int> _inactiveTouches = new List<int>();
+		private List<RectTransform> _ignoredAreas = new List<RectTransform>();
+		private List<Rect> _ignoredRects = new List<Rect>();
 
 		// PUBLIC METHODS
 
@@ -106,8 +106,8 @@ namespace TPSBR.UI
 			_lookRect = GetScreenSpaceRect(_look);
 			_moveRect = GetScreenSpaceRect(_move);
 
-			_isFiring      = false;
-			_isJumping     = false;
+			_isFiring = false;
+			_isJumping = false;
 			_isInteracting = false;
 		}
 
@@ -137,16 +137,16 @@ namespace TPSBR.UI
 			{
 				Look += InputUtility.PixelsToCentimeters(_lookDelta);
 
-				if (_isFiring      == true) { Fire     = true; }
-				if (_isJumping     == true) { Jump     = true; }
+				if (_isFiring == true) { Fire = true; }
+				if (_isJumping == true) { Jump = true; }
 				if (_isInteracting == true) { Interact = true; }
 
 				_lookDelta = default;
 			}
 			else
 			{
-				Fire     = false; _isFiring      = false;
-				Jump     = false; _isJumping     = false;
+				Fire = false; _isFiring = false;
+				Jump = false; _isJumping = false;
 				Interact = false; _isInteracting = false;
 			}
 		}
@@ -155,8 +155,8 @@ namespace TPSBR.UI
 
 		void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
 		{
-			if (eventData.pointerEnter == _fire.gameObject)     { Fire     = true; _isFiring      = true; }
-			if (eventData.pointerEnter == _jump.gameObject)     { Jump     = true; _isJumping     = true; }
+			if (eventData.pointerEnter == _fire.gameObject) { Fire = true; _isFiring = true; }
+			if (eventData.pointerEnter == _jump.gameObject) { Jump = true; _isJumping = true; }
 			if (eventData.pointerEnter == _interact.gameObject) { Interact = true; _isInteracting = true; }
 		}
 
@@ -174,9 +174,9 @@ namespace TPSBR.UI
 			ReadOnlyArray<TouchControl> touches = touchscreen.touches;
 			for (int i = 0, count = touches.Count; i < count; i++)
 			{
-				TouchControl touch   = touches[i];
-				TouchPhase   phase   = touch.phase.ReadValue();
-				int          touchID = touch.touchId.ReadValue();
+				TouchControl touch = touches[i];
+				TouchPhase phase = touch.phase.ReadValue();
+				int touchID = touch.touchId.ReadValue();
 
 				_inactiveTouches.Remove(touchID);
 
@@ -212,7 +212,8 @@ namespace TPSBR.UI
 
 		private void ProcessMouse()
 		{
-#if UNITY_EDITOR
+			// Modified: Allow mouse input when mobile simulation is enabled in editor
+			// or when running on non-mobile platforms with mobile simulation enabled
 			Mouse mouse = Mouse.current;
 			if (mouse == null)
 				return;
@@ -229,7 +230,6 @@ namespace TPSBR.UI
 			{
 				ProcessTouchEnded(int.MaxValue);
 			}
-#endif
 		}
 
 		private void ProcessTouchBegan(int touchID, Vector2 touchPosition)
@@ -244,8 +244,8 @@ namespace TPSBR.UI
 			if (_moveRect.Contains(touchPosition) == true)
 			{
 				_movePointerID = touchID;
-				_movePosition  = touchPosition;
-				_moveOrigin    = _movePosition;
+				_movePosition = touchPosition;
+				_moveOrigin = _movePosition;
 
 				_joystick.position = _movePosition;
 
@@ -255,8 +255,8 @@ namespace TPSBR.UI
 			else if (_lookRect.Contains(touchPosition) == true)
 			{
 				_lookPointerID = touchID;
-				_lookPosition  = touchPosition;
-				_lookDelta     = default;
+				_lookPosition = touchPosition;
+				_lookDelta = default;
 			}
 		}
 
@@ -266,20 +266,20 @@ namespace TPSBR.UI
 			{
 				_movePosition = touchPosition;
 
-				Vector2 direction    = _movePosition - _moveOrigin;
-				float   scaledRadius = _joystickRadius * transform.lossyScale.x;
+				Vector2 direction = _movePosition - _moveOrigin;
+				float scaledRadius = _joystickRadius * transform.lossyScale.x;
 
 				if (scaledRadius > 0.0f && direction.sqrMagnitude > scaledRadius * scaledRadius)
 				{
 					if (_moveJoystickOrigin == true)
 					{
-						_joystick.position                 = _movePosition;
-						_moveOrigin                        = _movePosition - scaledRadius * direction.normalized;
+						_joystick.position = _movePosition;
+						_moveOrigin = _movePosition - scaledRadius * direction.normalized;
 						_joystickOrigin.transform.position = _moveOrigin;
 					}
 					else
 					{
-						_joystick.position = _moveOrigin + direction.normalized * scaledRadius;;
+						_joystick.position = _moveOrigin + direction.normalized * scaledRadius; ;
 					}
 				}
 				else
@@ -291,7 +291,7 @@ namespace TPSBR.UI
 			{
 				Vector2 position = touchPosition;
 
-				_lookDelta    = position - _lookPosition;
+				_lookDelta = position - _lookPosition;
 				_lookPosition = position;
 			}
 		}
@@ -324,18 +324,18 @@ namespace TPSBR.UI
 
 		private void ToggleState(bool isActive)
 		{
-			_joystick.position  = _joystickInitialPosition;
+			_joystick.position = _joystickInitialPosition;
 
-			_movePointerID  = -1;
-			_movePosition   = default;
-			_moveOrigin     = default;
+			_movePointerID = -1;
+			_movePosition = default;
+			_moveOrigin = default;
 
-			_lookPointerID  = -1;
-			_lookPosition   = default;
-			_lookDelta      = default;
+			_lookPointerID = -1;
+			_lookPosition = default;
+			_lookDelta = default;
 
-			_movePointerID  = -1;
-			_lookPointerID  = -1;
+			_movePointerID = -1;
+			_lookPointerID = -1;
 
 			_root.CanvasGroup.SetActive(isActive);
 		}
@@ -348,7 +348,7 @@ namespace TPSBR.UI
 				canvas = transform.GetComponentInParent<Canvas>();
 			}
 
-			Rect rect  = transform.rect;
+			Rect rect = transform.rect;
 			rect.size *= canvas.scaleFactor;
 
 			if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
@@ -357,7 +357,7 @@ namespace TPSBR.UI
 			}
 			else if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
 			{
-				rect.center =  transform.position;
+				rect.center = transform.position;
 			}
 
 			return rect;
