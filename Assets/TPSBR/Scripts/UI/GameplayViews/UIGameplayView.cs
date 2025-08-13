@@ -36,6 +36,8 @@ namespace TPSBR.UI
 		private UIJetpack _jetpack;
 		[SerializeField]
 		private UIButton _menuButton;
+		[SerializeField]
+		private SimpleButtonTest _myButton;
 
 		[Header("Gameplay Modes")]
 		[SerializeField]
@@ -87,6 +89,12 @@ namespace TPSBR.UI
 			{
 				_menuButton.onClick.AddListener(OnMenuButton);
 			}
+
+			// Set up MyButton click handler
+			if (_myButton != null)
+			{
+				_myButton.SetJetpackActivationHandler(OnMyButtonClick);
+			}
 		}
 
 		protected override void OnDeinitialize()
@@ -106,6 +114,12 @@ namespace TPSBR.UI
 			if (_menuButton != null)
 			{
 				_menuButton.onClick.RemoveListener(OnMenuButton);
+			}
+
+			// Remove MyButton click handler
+			if (_myButton != null)
+			{
+				_myButton.SetJetpackActivationHandler(null);
 			}
 		}
 
@@ -158,6 +172,12 @@ namespace TPSBR.UI
 			_crosshair.UpdateCrosshair(_localAgent);
 			_interactions.UpdateInteractions(Context, _localAgent);
 			_jetpack.UpdateJetpack(_localAgent.Jetpack);
+			
+			// Update MyButton visual status
+			if (_myButton != null && _localAgent.Jetpack != null)
+			{
+				_myButton.UpdateJetpackStatus(_localAgent.Jetpack.IsActive);
+			}
 		}
 
 		// PRIVATE MEMBERS
@@ -258,6 +278,21 @@ namespace TPSBR.UI
 		private void OnMenuButton()
 		{
 			Context.Input.TrigggerBackAction();
+		}
+
+		private void OnMyButtonClick()
+		{
+			if (_localAgent != null && _localAgent.Jetpack != null)
+			{
+				if (_localAgent.Jetpack.IsActive)
+				{
+					_localAgent.Jetpack.Deactivate();
+				}
+				else
+				{
+					_localAgent.Jetpack.Activate();
+				}
+			}
 		}
 
 		private void SetLocalAgent(Agent agent, Player player, bool isLocalPlayer)
