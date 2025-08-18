@@ -37,7 +37,7 @@ namespace TPSBR.UI
 		[SerializeField]
 		private UIButton _menuButton;
 		[SerializeField]
-		private SimpleButtonTest _myButton;
+		private MyButton _myButton;
 
 		[Header("Gameplay Modes")]
 		[SerializeField]
@@ -57,7 +57,7 @@ namespace TPSBR.UI
 		[SerializeField]
 		private AudioSetup _interactionFailedSound;
 
-		private Agent              _localAgent;
+		private Agent _localAgent;
 		private NetworkBehaviourId _localAgentId;
 
 		// UIView INTERFACE
@@ -68,10 +68,10 @@ namespace TPSBR.UI
 
 			ClearLocalAgent();
 
-			Context.GameplayMode.OnAgentDeath       += OnAgentDeath;
+			Context.GameplayMode.OnAgentDeath += OnAgentDeath;
 			Context.GameplayMode.OnPlayerEliminated += OnPlayerEliminated;
 			Context.GameplayMode.OnPlayerJoinedGame += OnPlayerJoined;
-			Context.GameplayMode.OnPlayerLeftGame   += OnPlayerLeft;
+			Context.GameplayMode.OnPlayerLeftGame += OnPlayerLeft;
 
 			if (Context.Announcer != null)
 			{
@@ -90,21 +90,16 @@ namespace TPSBR.UI
 				_menuButton.onClick.AddListener(OnMenuButton);
 			}
 
-			// Set up MyButton click handler
-			if (_myButton != null)
-			{
-				_myButton.SetJetpackActivationHandler(OnMyButtonClick);
-			}
 		}
 
 		protected override void OnDeinitialize()
 		{
 			base.OnDeinitialize();
 
-			Context.GameplayMode.OnAgentDeath       -= OnAgentDeath;
+			Context.GameplayMode.OnAgentDeath -= OnAgentDeath;
 			Context.GameplayMode.OnPlayerEliminated -= OnPlayerEliminated;
 			Context.GameplayMode.OnPlayerJoinedGame -= OnPlayerJoined;
-			Context.GameplayMode.OnPlayerLeftGame   -= OnPlayerLeft;
+			Context.GameplayMode.OnPlayerLeftGame -= OnPlayerLeft;
 
 			if (Context.Announcer != null)
 			{
@@ -172,7 +167,7 @@ namespace TPSBR.UI
 			_crosshair.UpdateCrosshair(_localAgent);
 			_interactions.UpdateInteractions(Context, _localAgent);
 			_jetpack.UpdateJetpack(_localAgent.Jetpack);
-			
+
 			// Update MyButton visual status
 			if (_myButton != null && _localAgent.Jetpack != null)
 			{
@@ -195,10 +190,10 @@ namespace TPSBR.UI
 
 			_killFeed.ShowFeed(new KillFeedData
 			{
-				Killer        = killerPlayer != null ? killerPlayer.Nickname : "",
-				Victim        = victimPlayer != null ? victimPlayer.Nickname : "",
-				IsHeadshot    = killData.Headshot,
-				DamageType    = killData.HitType,
+				Killer = killerPlayer != null ? killerPlayer.Nickname : "",
+				Victim = victimPlayer != null ? victimPlayer.Nickname : "",
+				IsHeadshot = killData.Headshot,
+				DamageType = killData.HitType,
 				VictimIsLocal = killData.VictimRef != PlayerRef.None && killData.VictimRef == Context.LocalPlayerRef,
 				KillerIsLocal = killData.KillerRef != PlayerRef.None && killData.KillerRef == Context.LocalPlayerRef,
 			});
@@ -209,10 +204,10 @@ namespace TPSBR.UI
 
 				_events.ShowEvent(new GameplayEventData
 				{
-					Name        = eliminated == true ? "YOU WERE ELIMINATED" : "YOU WERE KILLED",
+					Name = eliminated == true ? "YOU WERE ELIMINATED" : "YOU WERE KILLED",
 					Description = killerPlayer != null ? $"Eliminated by {killerPlayer.Nickname}" : "",
-					Color       = _playerDeathColor,
-					Sound       = _playerDeathSound,
+					Color = _playerDeathColor,
+					Sound = _playerDeathSound,
 				});
 			}
 			else if (killData.KillerRef == Context.ObservedPlayerRef)
@@ -221,10 +216,10 @@ namespace TPSBR.UI
 
 				_events.ShowEvent(new GameplayEventData
 				{
-					Name        = eliminated == true ? "ENEMY ELIMINATED" : "ENEMY KILLED",
+					Name = eliminated == true ? "ENEMY ELIMINATED" : "ENEMY KILLED",
 					Description = victimPlayer != null ? victimPlayer.Nickname : "",
-					Color       = _enemyKilledColor,
-					Sound       = _enemyKilledSound,
+					Color = _enemyKilledColor,
+					Sound = _enemyKilledSound,
 				});
 			}
 		}
@@ -249,7 +244,7 @@ namespace TPSBR.UI
 
 			_killFeed.ShowFeed(new JoinedLeftFeedData
 			{
-				Joined   = true,
+				Joined = true,
 				Nickname = player.Nickname,
 			});
 		}
@@ -258,7 +253,7 @@ namespace TPSBR.UI
 		{
 			_killFeed.ShowFeed(new JoinedLeftFeedData
 			{
-				Joined   = false,
+				Joined = false,
 				Nickname = nickname,
 			});
 		}
@@ -305,7 +300,7 @@ namespace TPSBR.UI
 				_localAgent.Interactions.InteractionFailed -= OnInteractionFailed;
 			}
 
-			_localAgent   = agent;
+			_localAgent = agent;
 			_localAgentId = agent.Id;
 
 			_health.SetActive(true);
@@ -344,7 +339,7 @@ namespace TPSBR.UI
 				_localAgent.Health.HitTaken -= OnHitTaken;
 				_localAgent.Interactions.InteractionFailed -= OnInteractionFailed;
 
-				_localAgent   = null;
+				_localAgent = null;
 				_localAgentId = default;
 			}
 		}
@@ -358,10 +353,10 @@ namespace TPSBR.UI
 		{
 			_events.ShowEvent(new GameplayEventData
 			{
-				Name        = string.Empty,
+				Name = string.Empty,
 				Description = reason,
-				Color       = _interactionFailedColor,
-				Sound       = _interactionFailedSound,
+				Color = _interactionFailedColor,
+				Sound = _interactionFailedSound,
 			}, false, true);
 		}
 

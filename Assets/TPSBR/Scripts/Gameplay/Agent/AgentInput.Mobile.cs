@@ -45,6 +45,7 @@ namespace TPSBR
 			// _renderInput.Jump              = _mobileInputView.Jump;
 			_renderInput.Jump = keyboard.spaceKey.isPressed || UIJumpButton.IsPressed;
 			_renderInput.Thrust = keyboard.spaceKey.isPressed || UIJumpButton.IsPressed;
+			_renderInput.ToggleJetpack = keyboard.xKey.isPressed || MyButton.IsPressed;
 
 
 			_renderInput.Attack = _mobileInputView.Fire;
