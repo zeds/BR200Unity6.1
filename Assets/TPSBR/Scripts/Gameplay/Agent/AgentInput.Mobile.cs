@@ -2,6 +2,7 @@ namespace TPSBR
 {
 	using UnityEngine;
 	using TPSBR.UI;
+	using UnityEngine.InputSystem;
 
 	public sealed partial class AgentInput
 	{
@@ -11,6 +12,10 @@ namespace TPSBR
 
 			Vector2 moveDirection;
 			Vector2 lookRotationDelta;
+
+
+			Keyboard keyboard = Keyboard.current;
+
 
 			if (_mobileInputView == null)
 			{
@@ -24,7 +29,7 @@ namespace TPSBR
 
 			const float mobileSensitivityMultiplier = 32.0f;
 
-			moveDirection     = _mobileInputView.Move.normalized;
+			moveDirection = _mobileInputView.Move.normalized;
 			lookRotationDelta = InputUtility.GetSmoothLookRotationDelta(_smoothLookRotationDelta, new Vector2(-_mobileInputView.Look.y, _mobileInputView.Look.x) * mobileSensitivityMultiplier, Global.RuntimeSettings.Sensitivity, _lookResponsivity);
 
 			_mobileInputView.Look = default;
@@ -34,11 +39,16 @@ namespace TPSBR
 				lookRotationDelta *= Global.RuntimeSettings.AimSensitivity;
 			}
 
-			_renderInput.MoveDirection     = moveDirection;
+			_renderInput.MoveDirection = moveDirection;
 			_renderInput.LookRotationDelta = lookRotationDelta;
-			_renderInput.Jump              = _mobileInputView.Jump;
-			_renderInput.Attack            = _mobileInputView.Fire;
-			_renderInput.Interact          = _mobileInputView.Interact;
+			//TOM:
+			// _renderInput.Jump              = _mobileInputView.Jump;
+			_renderInput.Jump = keyboard.spaceKey.isPressed || UIJumpButton.IsPressed;
+			_renderInput.Thrust = keyboard.spaceKey.isPressed || UIJumpButton.IsPressed;
+
+
+			_renderInput.Attack = _mobileInputView.Fire;
+			_renderInput.Interact = _mobileInputView.Interact;
 		}
 	}
 }
