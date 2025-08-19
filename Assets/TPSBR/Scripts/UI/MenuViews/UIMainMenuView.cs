@@ -1,8 +1,26 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.Networking;
+using System.Collections;
+using System.Text;
+using UnityEngine.UI;
+using System;
 
 namespace TPSBR.UI
 {
+	[System.Serializable]
+	public class ResponseData
+	{
+		public bool success;  // トップレベルに配置
+		public Data data;
+	}
+
+	[System.Serializable]
+	public class Data
+	{
+		public string message;
+		public string timestamp;
+	}
 	public class UIMainMenuView : UIView
 	{
 		// PRIVATE MEMBERS
@@ -105,7 +123,78 @@ namespace TPSBR.UI
 
 		private void OnPlayButton()
 		{
-			Open<UIMultiplayerView>();
+
+			StartCoroutine(PostJson());
+
+			// // エラーダイアログを表示
+			// var errorDialog = Open<UIErrorDialogView>();
+
+			// // エラーメッセージを設定（推測される設定方法）
+			// errorDialog.Title.text = "Error";
+			// errorDialog.Description.text = "Pls try to update your APP";
+
+			// // ダイアログが閉じられた時の処理
+			// errorDialog.HasClosed += () =>
+			// {
+			// 	// ダイアログが閉じられた後の処理
+			// 	Debug.Log("エラーダイアログが閉じられました");
+			// };
+
+			// Open<UIMultiplayerView>();
+		}
+
+		IEnumerator PostJson()
+		{
+			Debug.Log("PostJson called");
+
+			// JSON文字列を作成
+			string version = Application.version.ToString();
+			string response_json = "{\"name\":\"Player888\",\"version\":\"0.0.1\"}";
+			byte[] bodyRaw = Encoding.UTF8.GetBytes(response_json);
+
+			// POSTリクエスト作成
+			UnityWebRequest request = new UnityWebRequest("https://find-vietnam.com/api/v1/playbutton", "POST");
+			// UnityWebRequest request = new UnityWebRequest("http://localhost:3000/api/v1/playbutton", "POST");
+			request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+			request.downloadHandler = new DownloadHandlerBuffer();
+
+			// Content-Typeを application/json に設定
+			request.SetRequestHeader("Content-Type", "application/json");
+
+			yield return request.SendWebRequest();
+
+			if (request.result != UnityWebRequest.Result.Success)
+				Debug.LogError(request.error);
+			else
+			{
+				string json = request.downloadHandler.text;
+				ResponseData response = JsonUtility.FromJson<ResponseData>(json);
+				bool isSuccess = response.success;
+				string message = response.data.message;
+
+				// エラーダイアログを表示
+				var errorDialog = Open<UIInfoDialogView>();
+
+				// エラーメッセージを設定（推測される設定方法）
+				errorDialog.Title.text = isSuccess ? "Success" : "Error";
+				errorDialog.Description.text = message;
+
+				// ダイアログが閉じられた時の処理
+				errorDialog.HasClosed += () =>
+				{
+					// ダイアログが閉じられた後の処理
+					if (isSuccess)
+					{
+						Open<UIMultiplayerView>();
+					}
+					else
+					{
+						Debug.LogError("Play button action failed: " + message);
+					}
+				};
+
+			}
+			// Debug.Log(request.downloadHandler.text);
 		}
 
 		private void OnCreditsButton()
