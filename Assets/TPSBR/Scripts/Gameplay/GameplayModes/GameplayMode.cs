@@ -11,10 +11,10 @@ namespace TPSBR
 	{
 		public PlayerRef KillerRef;
 		public PlayerRef VictimRef;
-		public EHitType  HitType;
-		public bool      Headshot { get { return _flags.IsBitSet(0); } set { _flags.SetBit(0, value); } }
+		public EHitType HitType;
+		public bool Headshot { get { return _flags.IsBitSet(0); } set { _flags.SetBit(0, value); } }
 
-		private byte     _flags;
+		private byte _flags;
 	}
 
 	public struct RespawnRequest
@@ -42,32 +42,32 @@ namespace TPSBR
 
 		public string GameplayName;
 
-		public int    MaxPlayers;
-		public short  ScorePerKill;
-		public short  ScorePerDeath;
-		public short  ScorePerSuicide;
-		public float  RespawnTime;
-		public float  TimeLimit;
-		public float  BackfillTimeLimit;
+		public int MaxPlayers;
+		public short ScorePerKill;
+		public short ScorePerDeath;
+		public short ScorePerSuicide;
+		public float RespawnTime;
+		public float TimeLimit;
+		public float BackfillTimeLimit;
 
 		public Announcement[] Announcements;
 
 		// PUBLIC MEMBERS
 
-		public EGameplayType         Type          => _type;
-		public float                 Time          => (Runner.Tick - _startTick) * Runner.DeltaTime;
-		public float                 RemainingTime => _endTimer.IsRunning == true ? _endTimer.RemainingTime(Runner).Value : 0f;
+		public EGameplayType Type => _type;
+		public float Time => (Runner.Tick - _startTick) * Runner.DeltaTime;
+		public float RemainingTime => _endTimer.IsRunning == true ? _endTimer.RemainingTime(Runner).Value : 0f;
 
 		[Networked, HideInInspector]
-		public EState                State         { get; private set; }
+		public EState State { get; private set; }
 
-		public List<SpawnPoint>      SpawnPoints   => _allSpawnPoints;
-		public ShrinkingArea         ShrinkingArea => _shrinkingArea;
+		public List<SpawnPoint> SpawnPoints => _allSpawnPoints;
+		public ShrinkingArea ShrinkingArea => _shrinkingArea;
 
-		public Action<PlayerRef>     OnPlayerJoinedGame;
-		public Action<string>        OnPlayerLeftGame;
-		public Action<KillData>      OnAgentDeath;
-		public Action<PlayerRef>     OnPlayerEliminated;
+		public Action<PlayerRef> OnPlayerJoinedGame;
+		public Action<string> OnPlayerLeftGame;
+		public Action<KillData> OnAgentDeath;
+		public Action<PlayerRef> OnPlayerEliminated;
 
 		// PROTECTED MEMBERS
 
@@ -87,12 +87,12 @@ namespace TPSBR
 		[SerializeField]
 		private float _maxKillInRowDelay = 3.5f;
 
-		private Queue<RespawnRequest>    _respawnRequests       = new Queue<RespawnRequest>(16);
+		private Queue<RespawnRequest> _respawnRequests = new Queue<RespawnRequest>(16);
 
-		private List<SpawnPoint>         _allSpawnPoints        = new List<SpawnPoint>();
-		private List<SpawnPoint>         _availableSpawnPoints  = new List<SpawnPoint>();
-		private DefaultPlayerComparer    _playerComparer        = new DefaultPlayerComparer();
-		private float                    _backfillTimerS;
+		private List<SpawnPoint> _allSpawnPoints = new List<SpawnPoint>();
+		private List<SpawnPoint> _availableSpawnPoints = new List<SpawnPoint>();
+		private DefaultPlayerComparer _playerComparer = new DefaultPlayerComparer();
+		private float _backfillTimerS;
 
 		// PUBLIC METHODS
 
@@ -148,8 +148,8 @@ namespace TPSBR
 			if (State != EState.Active)
 				return;
 
-			var victimRef        = victim.Object.InputAuthority;
-			var victimPlayer     = Context.NetworkGame.GetPlayer(victimRef);
+			var victimRef = victim.Object.InputAuthority;
+			var victimPlayer = Context.NetworkGame.GetPlayer(victimRef);
 			var victimStatistics = victimPlayer != null ? victimPlayer.Statistics : default;
 
 			var respawnTime = GetRespawnTime(victimStatistics);
@@ -160,7 +160,7 @@ namespace TPSBR
 				_respawnRequests.Enqueue(new RespawnRequest()
 				{
 					PlayerRef = victimRef,
-					Timer     = respawnTimer,
+					Timer = respawnTimer,
 				});
 			}
 			else
@@ -168,14 +168,14 @@ namespace TPSBR
 				victimStatistics.IsEliminated = true;
 			}
 
-			victimStatistics.IsAlive           = false;
-			victimStatistics.Deaths           += 1;
-			victimStatistics.Score            += ScorePerDeath;
+			victimStatistics.IsAlive = false;
+			victimStatistics.Deaths += 1;
+			victimStatistics.Score += ScorePerDeath;
 			victimStatistics.KillsWithoutDeath = 0;
 
-			var killerRef         = hitData.InstigatorRef;
-			var killerPlayer      = killerRef.IsRealPlayer == true ? Context.NetworkGame.GetPlayer(killerRef) : default;
-			var killerStatistics  = killerPlayer != null ? killerPlayer.Statistics : default;
+			var killerRef = hitData.InstigatorRef;
+			var killerPlayer = killerRef.IsRealPlayer == true ? Context.NetworkGame.GetPlayer(killerRef) : default;
+			var killerStatistics = killerPlayer != null ? killerPlayer.Statistics : default;
 
 			if (killerRef == victimRef)
 			{
@@ -217,8 +217,8 @@ namespace TPSBR
 			{
 				KillerRef = killerStatistics.PlayerRef,
 				VictimRef = victimRef,
-				Headshot  = hitData.IsCritical,
-				HitType   = hitData.HitType,
+				Headshot = hitData.IsCritical,
+				HitType = hitData.HitType,
 			};
 
 			RPC_AgentDeath(killData);
@@ -243,7 +243,7 @@ namespace TPSBR
 				for (int i = 0, count = Mathf.Min(5 + _availableSpawnPoints.Count, 25); i < count; ++i)
 				{
 					Transform spawnPoint = _availableSpawnPoints.GetRandom().transform;
-					bool      isValid    = true;
+					bool isValid = true;
 
 					foreach (var player in Context.NetworkGame.ActivePlayers)
 					{
@@ -275,7 +275,7 @@ namespace TPSBR
 		{
 			var observedPlayerRef = Context.ObservedPlayerRef;
 
-			int playerIndex    = 0;
+			int playerIndex = 0;
 			int maxPlayerIndex = 1000;
 
 			while (playerIndex < maxPlayerIndex)
@@ -382,7 +382,7 @@ namespace TPSBR
 
 			switch (State)
 			{
-				case EState.Active:   FixedUpdateNetwork_Active();   break;
+				case EState.Active: FixedUpdateNetwork_Active(); break;
 				case EState.Finished: FixedUpdateNetwork_Finished(); break;
 			}
 		}
@@ -432,12 +432,12 @@ namespace TPSBR
 			}
 
 			var agentObject = Runner.Spawn(player.AgentPrefab, position, rotation, playerRef);
-			var agent       = agentObject.GetComponent<Agent>();
+			var agent = agentObject.GetComponent<Agent>();
 
 			Runner.SetPlayerAlwaysInterested(playerRef, agentObject, true);
 
-			var statistics          = player.Statistics;
-			statistics.IsAlive      = true;
+			var statistics = player.Statistics;
+			statistics.IsAlive = true;
 			statistics.RespawnTimer = default;
 
 			player.UpdateStatistics(statistics);
@@ -571,7 +571,7 @@ namespace TPSBR
 					continue;
 
 				var direction = spawnPoint.transform.position - center;
-				direction.y   = 0f;
+				direction.y = 0f;
 
 				if (direction.sqrMagnitude <= radiusSqr)
 				{

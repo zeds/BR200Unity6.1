@@ -94,13 +94,13 @@ namespace TPSBR.UI
 		{
 			var request = new SessionRequest
 			{
-				DisplayName  = _gameName.text,
-				GameMode     = _dedicatedServer.isOn == true ? GameMode.Server : GameMode.Host,
-				GameplayType = (EGameplayType) (_gameplay.value + 1),
-				MaxPlayers   = System.Int32.Parse(_maxPlayers.text),
-				ScenePath    = _mapSetups[_maps.Selection].ScenePath,
+				DisplayName = _gameName.text,
+				GameMode = _dedicatedServer.isOn == true ? GameMode.Server : GameMode.Host,
+				GameplayType = (EGameplayType)(_gameplay.value + 1),
+				MaxPlayers = System.Int32.Parse(_maxPlayers.text),
+				ScenePath = _mapSetups[_maps.Selection].ScenePath,
 			};
-;
+			;
 			Context.Matchmaking.CreateSession(request);
 		}
 
