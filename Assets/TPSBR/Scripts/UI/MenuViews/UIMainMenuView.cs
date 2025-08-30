@@ -5,6 +5,7 @@ using System.Collections;
 using System.Text;
 using UnityEngine.UI;
 using System;
+using TPSBR;
 
 namespace TPSBR.UI
 {
@@ -46,6 +47,19 @@ namespace TPSBR.UI
 
 		// PUBLIC METHODS
 
+		//TOM:Playerのnicknameを取得するためにContextとPlayerを取得できるようにする
+		/// <summary>
+		/// 現在のローカルプレイヤーを取得
+		/// </summary>
+		public Player GetLocalPlayer()
+		{
+			if (Context?.NetworkGame != null && Context.LocalPlayerRef.IsRealPlayer)
+			{
+				Player player = Context.NetworkGame.GetPlayer(Context.LocalPlayerRef);
+				return player;
+			}
+			return null;
+		}
 		public void OnPlayerButtonPointerEnter()
 		{
 			Context.PlayerPreview.ShowOutline(true);
@@ -149,7 +163,22 @@ namespace TPSBR.UI
 
 			// JSON文字列を作成
 			string version = Application.version.ToString();
-			string response_json = "{\"name\":\"Player888\",\"version\":\"0.0.1\"}";
+			// Player クラスから直接ニックネームを取得
+			string name = "ErrorPlayer"; // デフォルト値
+			string character = "ErrorCharacter";
+			string user_id = "ErrorUserID";
+
+			// === 代替案1: Global.PlayerService経由（推奨） ===
+			// Global.PlayerServiceはシングルトンとして存在するため、直接アクセス可能
+			if (Global.PlayerService?.PlayerData != null)
+			{
+				name = Global.PlayerService.PlayerData.Nickname;
+				character = Global.PlayerService.PlayerData.AgentID;
+				user_id = Global.PlayerService.PlayerData.UserID;
+				Debug.Log($"Got nickname from PlayerService: {name}");
+			}
+
+			string response_json = $"{{\"user_id\":\"{user_id}\",\"name\":\"{name}\",\"character\":\"{character}\",\"version\":\"{version}\"}}";
 			byte[] bodyRaw = Encoding.UTF8.GetBytes(response_json);
 
 			// POSTリクエスト作成
