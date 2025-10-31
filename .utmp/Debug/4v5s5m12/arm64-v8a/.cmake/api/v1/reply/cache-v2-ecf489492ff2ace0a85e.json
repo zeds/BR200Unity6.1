@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "armeabi-v7a"
+			"value" : "arm64-v8a"
 		},
 		{
 			"name" : "ANDROID_NDK",
@@ -23,7 +23,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK"
 		},
 		{
 			"name" : "ANDROID_PLATFORM",
@@ -75,7 +75,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-addr2line"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-addr2line"
 		},
 		{
 			"name" : "CMAKE_ANDROID_ARCH_ABI",
@@ -87,7 +87,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "armeabi-v7a"
+			"value" : "arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_ANDROID_NDK",
@@ -99,7 +99,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK"
 		},
 		{
 			"name" : "CMAKE_AR",
@@ -115,7 +115,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
 		},
 		{
 			"name" : "CMAKE_ASM_FLAGS",
@@ -163,7 +163,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "RelWithDebInfo"
+			"value" : "Debug"
 		},
 		{
 			"name" : "CMAKE_CACHEFILE_DIR",
@@ -175,7 +175,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/armeabi-v7a"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/Debug/4v5s5m12/arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -223,7 +223,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/cmake"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/cmake"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -235,7 +235,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/cpack"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/cpack"
 		},
 		{
 			"name" : "CMAKE_CTEST_COMMAND",
@@ -247,23 +247,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ctest"
-		},
-		{
-			"name" : "CMAKE_CXX_COMPILER",
-			"properties" : 
-			[
-				{
-					"name" : "ADVANCED",
-					"value" : "1"
-				},
-				{
-					"name" : "HELPSTRING",
-					"value" : "(This variable does not exist and should not be used)"
-				}
-			],
-			"type" : "UNINITIALIZED",
-			"value" : ""
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ctest"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_AR",
@@ -279,7 +263,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_RANLIB",
@@ -295,7 +279,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ranlib"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ranlib"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS",
@@ -394,22 +378,6 @@
 			"value" : "-latomic -lm"
 		},
 		{
-			"name" : "CMAKE_C_COMPILER",
-			"properties" : 
-			[
-				{
-					"name" : "ADVANCED",
-					"value" : "1"
-				},
-				{
-					"name" : "HELPSTRING",
-					"value" : "(This variable does not exist and should not be used)"
-				}
-			],
-			"type" : "UNINITIALIZED",
-			"value" : ""
-		},
-		{
 			"name" : "CMAKE_C_COMPILER_AR",
 			"properties" : 
 			[
@@ -423,7 +391,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"
 		},
 		{
 			"name" : "CMAKE_C_COMPILER_RANLIB",
@@ -439,7 +407,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ranlib"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ranlib"
 		},
 		{
 			"name" : "CMAKE_C_FLAGS",
@@ -551,7 +519,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-dlltool"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-dlltool"
 		},
 		{
 			"name" : "CMAKE_EDIT_COMMAND",
@@ -563,7 +531,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ccmake"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ccmake"
 		},
 		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
@@ -691,7 +659,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/prefab/armeabi-v7a/prefab"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/Debug/4v5s5m12/prefab/arm64-v8a/prefab"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -787,7 +755,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2q6j4a2r/obj/armeabi-v7a"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/4v5s5m12/obj/arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -803,7 +771,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/ld.lld"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/ld.lld"
 		},
 		{
 			"name" : "CMAKE_MAKE_PROGRAM",
@@ -815,7 +783,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ninja"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ninja"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -911,7 +879,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-nm"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-nm"
 		},
 		{
 			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
@@ -939,7 +907,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-objcopy"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-objcopy"
 		},
 		{
 			"name" : "CMAKE_OBJDUMP",
@@ -955,7 +923,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-objdump"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-objdump"
 		},
 		{
 			"name" : "CMAKE_PLATFORM_INFO_INITIALIZED",
@@ -1019,7 +987,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ranlib"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ranlib"
 		},
 		{
 			"name" : "CMAKE_READELF",
@@ -1035,7 +1003,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-readelf"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-readelf"
 		},
 		{
 			"name" : "CMAKE_ROOT",
@@ -1047,7 +1015,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/share/cmake-3.22"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/share/cmake-3.22"
 		},
 		{
 			"name" : "CMAKE_RUNTIME_OUTPUT_DIRECTORY",
@@ -1059,7 +1027,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2q6j4a2r/obj/armeabi-v7a"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/4v5s5m12/obj/arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1267,7 +1235,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-strip"
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-strip"
 		},
 		{
 			"name" : "CMAKE_SYSTEM_NAME",
@@ -1299,11 +1267,11 @@
 			[
 				{
 					"name" : "HELPSTRING",
-					"value" : "The CMake toolchain file"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "FILEPATH",
-			"value" : "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/NDK/build/cmake/android.toolchain.cmake"
+			"type" : "UNINITIALIZED",
+			"value" : "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/NDK/build/cmake/android.toolchain.cmake"
 		},
 		{
 			"name" : "CMAKE_UNAME",
@@ -1343,7 +1311,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/armeabi-v7a"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/Debug/4v5s5m12/arm64-v8a"
 		},
 		{
 			"name" : "Unity_IS_TOP_LEVEL",
@@ -1379,7 +1347,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/prefab/armeabi-v7a/prefab/lib/arm-linux-androideabi/cmake/game-activity"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/Debug/4v5s5m12/prefab/arm64-v8a/prefab/lib/aarch64-linux-android/cmake/game-activity"
 		},
 		{
 			"name" : "game_BINARY_DIR",
@@ -1391,7 +1359,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/armeabi-v7a/GameActivity"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/Debug/4v5s5m12/arm64-v8a/GameActivity"
 		},
 		{
 			"name" : "game_IS_TOP_LEVEL",
@@ -1439,7 +1407,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/prefab/armeabi-v7a/prefab/lib/arm-linux-androideabi/cmake/games-frame-pacing"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/Debug/4v5s5m12/prefab/arm64-v8a/prefab/lib/aarch64-linux-android/cmake/games-frame-pacing"
 		},
 		{
 			"name" : "swappywrapper_BINARY_DIR",
@@ -1451,7 +1419,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/armeabi-v7a/FramePacing"
+			"value" : "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/Debug/4v5s5m12/arm64-v8a/FramePacing"
 		},
 		{
 			"name" : "swappywrapper_IS_TOP_LEVEL",

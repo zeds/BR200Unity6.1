@@ -6,14 +6,14 @@
   ],
   "cleanCommandsComponents": [
     [
-      "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ninja",
+      "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ninja",
       "-C",
       "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/arm64-v8a",
       "clean"
     ]
   ],
   "buildTargetsCommandComponents": [
-    "/Applications/Unity/Hub/Editor/6000.1.0f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ninja",
+    "/Applications/Unity/Hub/Editor/6000.1.17f1/PlaybackEngines/AndroidPlayer/SDK/cmake/3.22.1/bin/ninja",
     "-C",
     "/Users/rodeo/Udemy/BR200Unity6.1/.utmp/RelWithDebInfo/2q6j4a2r/arm64-v8a",
     "{LIST_OF_TARGETS_TO_BUILD}"
