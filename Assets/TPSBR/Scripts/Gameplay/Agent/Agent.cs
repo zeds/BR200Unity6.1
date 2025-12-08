@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using Fusion;
 using Fusion.Addons.KCC;
+using System;
 
 namespace TPSBR
 {
@@ -12,14 +13,14 @@ namespace TPSBR
 
 		public bool IsObserved => Context != null && Context.ObservedAgent == this;
 
-		public AgentInput        AgentInput   => _agentInput;
-		public Interactions      Interactions => _interactions;
-		public Character         Character    => _character;
-		public Weapons           Weapons      => _weapons;
-		public Health            Health       => _health;
-		public AgentSenses       Senses       => _senses;
-		public Jetpack           Jetpack      => _jetpack;
-		public AgentVFX          Effects      => _agentVFX;
+		public AgentInput AgentInput => _agentInput;
+		public Interactions Interactions => _interactions;
+		public Character Character => _character;
+		public Weapons Weapons => _weapons;
+		public Health Health => _health;
+		public AgentSenses Senses => _senses;
+		public Jetpack Jetpack => _jetpack;
+		public AgentVFX Effects => _agentVFX;
 		public AgentInterestView InterestView => _interestView;
 
 		[Networked]
@@ -46,24 +47,27 @@ namespace TPSBR
 		[SerializeField]
 		private float _minFallDamageVelocity = 5f;
 
-		private AgentInput          _agentInput;
-		private Interactions        _interactions;
-		private AgentFootsteps      _footsteps;
-		private Character           _character;
-		private Weapons             _weapons;
-		private Jetpack             _jetpack;
-		private AgentSenses         _senses;
-		private Health              _health;
-		private AgentVFX            _agentVFX;
-		private AgentInterestView   _interestView;
+		private AgentInput _agentInput;
+		private Interactions _interactions;
+		private AgentFootsteps _footsteps;
+		private Character _character;
+		private Weapons _weapons;
+		private Jetpack _jetpack;
+		private AgentSenses _senses;
+		private Health _health;
+		private AgentVFX _agentVFX;
+		private AgentInterestView _interestView;
+		private AgentNameplate _nameplate;
 		private SortedUpdateInvoker _sortedUpdateInvoker;
-		private Quaternion          _cachedLookRotation;
-		private Quaternion          _cachedPitchRotation;
+		private Quaternion _cachedLookRotation;
+		private Quaternion _cachedPitchRotation;
 
 		// NetworkBehaviour INTERFACE
 
-		public override void Spawned()
+public override void Spawned()
 		{
+			Debug.Log($"[Agent] Spawned called - InputAuthority: {Object.InputAuthority}, name: {name}");
+			
 			name = Object.InputAuthority.ToString();
 
 			_sortedUpdateInvoker = Runner.GetSingleton<SortedUpdateInvoker>();
@@ -74,6 +78,36 @@ namespace TPSBR
 			_jetpack.OnSpawned(this);
 			_health.OnSpawned(this);
 			_agentVFX.OnSpawned(this);
+
+			// ネームプレートマネージャーに登録
+			if (NameplateManager.Instance != null)
+			{
+				Debug.Log("[Agent] Registering with NameplateManager...");
+				NameplateManager.Instance.RegisterAgent(this);
+			}
+			else
+			{
+				Debug.LogWarning("[Agent] NameplateManager.Instance is null!");
+			}
+
+			// AgentNameplateを手動で初期化
+			if (_nameplate != null)
+			{
+				// プレイヤー情報を取得
+				Player player = null;
+				var playerRef = Object.InputAuthority;
+				if (playerRef.IsRealPlayer)
+				{
+					var networkGame = FindObjectOfType<NetworkGame>();
+					if (networkGame != null)
+					{
+						player = networkGame.GetPlayer(playerRef);
+					}
+				}
+
+				Debug.Log("[Agent] Manually initializing AgentNameplate");
+				_nameplate.Initialize(Runner, Object.InputAuthority, player, HasInputAuthority);
+			}
 
 			if (ApplicationSettings.IsStrippedBatch == true)
 			{
@@ -108,9 +142,15 @@ namespace TPSBR
 
 		public override void Despawned(NetworkRunner runner, bool hasState)
 		{
-			if (_weapons  != null) { _weapons.OnDespawned();  }
-			if (_jetpack  != null) { _jetpack.OnDespawned();  }
-			if (_health   != null) { _health.OnDespawned();   }
+			// ネームプレートマネージャーから登録解除
+			if (NameplateManager.Instance != null)
+			{
+				NameplateManager.Instance.UnregisterAgent(Object.InputAuthority);
+			}
+
+			if (_weapons != null) { _weapons.OnDespawned(); }
+			if (_jetpack != null) { _jetpack.OnDespawned(); }
+			if (_health != null) { _health.OnDespawned(); }
 			if (_agentVFX != null) { _agentVFX.OnDespawned(); }
 		}
 
@@ -135,7 +175,7 @@ namespace TPSBR
 			Quaternion currentLookRotation = _character.CharacterController.FixedData.LookRotation;
 			if (_cachedLookRotation.ComponentEquals(currentLookRotation) == false)
 			{
-				_cachedLookRotation  = currentLookRotation;
+				_cachedLookRotation = currentLookRotation;
 				_cachedPitchRotation = Quaternion.Euler(_character.CharacterController.FixedData.LookPitch, 0.0f, 0.0f);
 			}
 
@@ -184,7 +224,7 @@ namespace TPSBR
 				Quaternion currentLookRotation = _character.CharacterController.RenderData.LookRotation;
 				if (_cachedLookRotation.ComponentEquals(currentLookRotation) == false)
 				{
-					_cachedLookRotation  = currentLookRotation;
+					_cachedLookRotation = currentLookRotation;
 					_cachedPitchRotation = Quaternion.Euler(_character.CharacterController.RenderData.LookPitch, 0.0f, 0.0f);
 				}
 
@@ -201,8 +241,8 @@ namespace TPSBR
 		{
 			// This method execution is sorted by LocalAlpha property passed in input and preserves realtime order of input actions.
 
-			bool attackWasActivated   = _agentInput.WasActivated(EGameplayInputAction.Attack);
-			bool reloadWasActivated   = _agentInput.WasActivated(EGameplayInputAction.Reload);
+			bool attackWasActivated = _agentInput.WasActivated(EGameplayInputAction.Attack);
+			bool reloadWasActivated = _agentInput.WasActivated(EGameplayInputAction.Reload);
 			bool interactWasActivated = _agentInput.WasActivated(EGameplayInputAction.Interact);
 
 			TryFire(attackWasActivated, _agentInput.FixedInput.Attack);
@@ -213,8 +253,10 @@ namespace TPSBR
 
 		// MonoBehaviour INTERFACE
 
-		private void Awake()
+private void Awake()
 		{
+			Debug.Log($"[Agent] Awake called on {gameObject.name}");
+			
 			_agentInput   = GetComponent<AgentInput>();
 			_interactions = GetComponent<Interactions>();
 			_footsteps    = GetComponent<AgentFootsteps>();
@@ -225,13 +267,26 @@ namespace TPSBR
 			_senses       = GetComponent<AgentSenses>();
 			_jetpack      = GetComponent<Jetpack>();
 			_interestView = GetComponent<AgentInterestView>();
+			
+			// ネームプレートコンポーネントを追加または取得
+			_nameplate = GetComponent<AgentNameplate>();
+			if (_nameplate == null)
+			{
+				Debug.Log("[Agent] AgentNameplate not found, adding component...");
+				_nameplate = gameObject.AddComponent<AgentNameplate>();
+				Debug.Log($"[Agent] AgentNameplate added: {_nameplate != null}");
+			}
+			else
+			{
+				Debug.Log("[Agent] AgentNameplate component already exists");
+			}
 		}
 
 		// PRIVATE METHODS
 
 		private void ProcessFixedInput()
 		{
-			KCC     kcc          = _character.CharacterController;
+			KCC kcc = _character.CharacterController;
 			KCCData kccFixedData = kcc.FixedData;
 
 			GameplayInput input = default;
@@ -302,8 +357,8 @@ namespace TPSBR
 
 		private void ProcessRenderInput()
 		{
-			KCC     kcc           = _character.CharacterController;
-			KCCData kccFixedData  = kcc.FixedData;
+			KCC kcc = _character.CharacterController;
+			KCCData kccFixedData = kcc.FixedData;
 
 			GameplayInput input = default;
 
@@ -314,8 +369,8 @@ namespace TPSBR
 				var accumulatedInput = _agentInput.AccumulatedInput;
 
 				input.LookRotationDelta = accumulatedInput.LookRotationDelta;
-				input.Aim               = accumulatedInput.Aim;
-				input.Thrust            = accumulatedInput.Thrust;
+				input.Aim = accumulatedInput.Aim;
+				input.Thrust = accumulatedInput.Thrust;
 			}
 
 			if (input.Aim == true)
@@ -404,7 +459,7 @@ namespace TPSBR
 			}
 
 			Vector2 baseLookRotation = kccData.GetLookRotation(true, true) - kccData.Recoil;
-			Vector2 recoilReduction  = Vector2.zero;
+			Vector2 recoilReduction = Vector2.zero;
 
 			if (recoil.x > 0f && lookRotationDelta.x < 0)
 			{
@@ -427,7 +482,7 @@ namespace TPSBR
 			}
 
 			lookRotationDelta -= recoilReduction;
-			recoil            += recoilReduction;
+			recoil += recoilReduction;
 
 			lookRotationDelta.x = Mathf.Clamp(baseLookRotation.x + lookRotationDelta.x, -_topCameraAngleLimit, _bottomCameraAngleLimit) - baseLookRotation.x;
 
@@ -472,15 +527,15 @@ namespace TPSBR
 
 			var hitData = new HitData
 			{
-				Action           = EHitAction.Damage,
-				Amount           = damage,
-				Position         = transform.position,
-				Normal           = Vector3.up,
-				Direction        = -Vector3.up,
-				InstigatorRef    = Object.InputAuthority,
-				Instigator       = _health,
-				Target           = _health,
-				HitType          = EHitType.Suicide,
+				Action = EHitAction.Damage,
+				Amount = damage,
+				Position = transform.position,
+				Normal = Vector3.up,
+				Direction = -Vector3.up,
+				InstigatorRef = Object.InputAuthority,
+				Instigator = _health,
+				Target = _health,
+				HitType = EHitType.Suicide,
 			};
 
 			(_health as IHitTarget).ProcessHit(ref hitData);
