@@ -1268,7 +1268,11 @@ PrefabInstance:
     - target: {fileID: 8839006879915141747, guid: c17b47fcacdfc8d4b80809005a2b2555, type: 3}
       propertyPath: _namePlatePrefab
       value: 
-      objectReference: {fileID: 2543696972668153161, guid: ba0559652aeaf40f280d7199ce6ff172, type: 3}
+      objectReference: {fileID: 9129091196324929528, guid: ba0559652aeaf40f280d7199ce6ff172, type: 3}
+    - target: {fileID: 8839006879915141747, guid: c17b47fcacdfc8d4b80809005a2b2555, type: 3}
+      propertyPath: _namePlateOffset.y
+      value: -4
+      objectReference: {fileID: 0}
     - target: {fileID: 8839006879915141747, guid: c17b47fcacdfc8d4b80809005a2b2555, type: 3}
       propertyPath: _showLocalPlayerNamePlate
       value: 1

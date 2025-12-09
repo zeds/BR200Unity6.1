@@ -12,26 +12,22 @@ namespace TPSBR
 
 		public bool IsObserved => Context != null && Context.ObservedAgent == this;
 
-		public AgentInput        AgentInput   => _agentInput;
-		public Interactions      Interactions => _interactions;
-		public Character         Character    => _character;
-		public Weapons           Weapons      => _weapons;
-		public Health            Health       => _health;
-		public AgentSenses       Senses       => _senses;
-		public Jetpack           Jetpack      => _jetpack;
-		public AgentVFX          Effects      => _agentVFX;
+		public AgentInput AgentInput => _agentInput;
+		public Interactions Interactions => _interactions;
+		public Character Character => _character;
+		public Weapons Weapons => _weapons;
+		public Health Health => _health;
+		public AgentSenses Senses => _senses;
+		public Jetpack Jetpack => _jetpack;
+		public AgentVFX Effects => _agentVFX;
 		public AgentInterestView InterestView => _interestView;
 		[Header("Name Plate")]
 		[SerializeField]
 		private GameObject _namePlatePrefab;
 		[SerializeField]
 		private bool _showLocalPlayerNamePlate = false;
-		[SerializeField]
-		private Vector3 _namePlateOffset = new Vector3(0f, 2.5f, 0f);
-		[SerializeField]
-		private Color _marineNameColor = new Color(0.2f, 0.5f, 1f);
-		[SerializeField]
-		private Color _soldierNameColor = new Color(1f, 0.3f, 0.2f);
+
+		// Soldierは青
 
 
 		[Networked]
@@ -58,81 +54,84 @@ namespace TPSBR
 		[SerializeField]
 		private float _minFallDamageVelocity = 5f;
 
-		private AgentInput          _agentInput;
-		private Interactions        _interactions;
-		private AgentFootsteps      _footsteps;
-		private Character           _character;
-		private Weapons             _weapons;
-		private Jetpack             _jetpack;
-		private AgentSenses         _senses;
-		private Health              _health;
-		private AgentVFX            _agentVFX;
-		private AgentInterestView   _interestView;		private GameObject          _namePlate;
-		private Transform           _namePlateTransform;
+		private AgentInput _agentInput;
+		private Interactions _interactions;
+		private AgentFootsteps _footsteps;
+		private Character _character;
+		private Weapons _weapons;
+		private Jetpack _jetpack;
+		private AgentSenses _senses;
+		private Health _health;
+		private AgentVFX _agentVFX;
+		private AgentInterestView _interestView; private GameObject _namePlate;
+		private Transform _namePlateTransform;
 
 		private SortedUpdateInvoker _sortedUpdateInvoker;
-		private Quaternion          _cachedLookRotation;
-		private Quaternion          _cachedPitchRotation;
+		private Quaternion _cachedLookRotation;
+		private Quaternion _cachedPitchRotation;
 
 		// NetworkBehaviour INTERFACE
 
-	public override void Spawned()
-	{
-		name = Object.InputAuthority.ToString();
-
-		_sortedUpdateInvoker = Runner.GetSingleton<SortedUpdateInvoker>();
-
-		_visualRoot.SetActive(true);
-
-		_character.OnSpawned(this);
-		_jetpack.OnSpawned(this);
-		_health.OnSpawned(this);
-		_agentVFX.OnSpawned(this);
-
-		// Create name plate
-		CreateNamePlate();
-
-		if (ApplicationSettings.IsStrippedBatch == true)
+		public override void Spawned()
 		{
-			gameObject.SetActive(false);
+			Debug.Log("[Agent] Spawned called for " + name);
 
-			if (ApplicationSettings.GenerateInput == true)
+			// Keep the prefab name (Marine/Soldier) for identification
+			// name = Object.InputAuthority.ToString();
+
+			_sortedUpdateInvoker = Runner.GetSingleton<SortedUpdateInvoker>();
+
+			_visualRoot.SetActive(true);
+
+			_character.OnSpawned(this);
+			_jetpack.OnSpawned(this);
+			_health.OnSpawned(this);
+			_agentVFX.OnSpawned(this);
+
+			// Create name plate
+			CreateNamePlate();
+
+			if (ApplicationSettings.IsStrippedBatch == true)
 			{
-				NetworkEvents networkEvents = Runner.GetComponent<NetworkEvents>();
-				networkEvents.OnInput.RemoveListener(GenerateRandomInput);
-				networkEvents.OnInput.AddListener(GenerateRandomInput);
+				gameObject.SetActive(false);
+
+				if (ApplicationSettings.GenerateInput == true)
+				{
+					NetworkEvents networkEvents = Runner.GetComponent<NetworkEvents>();
+					networkEvents.OnInput.RemoveListener(GenerateRandomInput);
+					networkEvents.OnInput.AddListener(GenerateRandomInput);
+				}
+			}
+
+			return;
+
+			void GenerateRandomInput(NetworkRunner runner, NetworkInput networkInput)
+			{
+				// Used for batch testing
+
+				GameplayInput gameplayInput = new GameplayInput();
+				gameplayInput.MoveDirection = new Vector2(UnityEngine.Random.value * 2.0f - 1.0f, UnityEngine.Random.value > 0.25f ? 1.0f : -1.0f).normalized;
+				gameplayInput.LookRotationDelta = new Vector2(UnityEngine.Random.value * 2.0f - 1.0f, UnityEngine.Random.value * 2.0f - 1.0f);
+				gameplayInput.Jump = UnityEngine.Random.value > 0.99f;
+				gameplayInput.Attack = UnityEngine.Random.value > 0.99f;
+				gameplayInput.Reload = UnityEngine.Random.value > 0.99f;
+				gameplayInput.Interact = UnityEngine.Random.value > 0.99f;
+				gameplayInput.Weapon = (byte)(UnityEngine.Random.value > 0.99f ? (UnityEngine.Random.value > 0.25f ? 2 : 1) : 0);
+
+				networkInput.Set(gameplayInput);
 			}
 		}
 
-		return;
-
-		void GenerateRandomInput(NetworkRunner runner, NetworkInput networkInput)
+		public override void Despawned(NetworkRunner runner, bool hasState)
 		{
-			// Used for batch testing
+			if (_weapons != null) { _weapons.OnDespawned(); }
+			if (_jetpack != null) { _jetpack.OnDespawned(); }
+			if (_health != null) { _health.OnDespawned(); }
+			if (_agentVFX != null) { _agentVFX.OnDespawned(); }
 
-			GameplayInput gameplayInput = new GameplayInput();
-			gameplayInput.MoveDirection     = new Vector2(UnityEngine.Random.value * 2.0f - 1.0f, UnityEngine.Random.value > 0.25f ? 1.0f : -1.0f).normalized;
-			gameplayInput.LookRotationDelta = new Vector2(UnityEngine.Random.value * 2.0f - 1.0f, UnityEngine.Random.value * 2.0f - 1.0f);
-			gameplayInput.Jump              = UnityEngine.Random.value > 0.99f;
-			gameplayInput.Attack            = UnityEngine.Random.value > 0.99f;
-			gameplayInput.Reload            = UnityEngine.Random.value > 0.99f;
-			gameplayInput.Interact          = UnityEngine.Random.value > 0.99f;
-			gameplayInput.Weapon            = (byte)(UnityEngine.Random.value > 0.99f ? (UnityEngine.Random.value > 0.25f ? 2 : 1) : 0);
-
-			networkInput.Set(gameplayInput);
+			// Destroy name plate
+			DestroyNamePlate();
 		}
-	}
-
-	public override void Despawned(NetworkRunner runner, bool hasState)
-	{
-		if (_weapons  != null) { _weapons.OnDespawned();  }
-		if (_jetpack  != null) { _jetpack.OnDespawned();  }
-		if (_health   != null) { _health.OnDespawned();   }
-		if (_agentVFX != null) { _agentVFX.OnDespawned(); }
-
-		// Destroy name plate
-		DestroyNamePlate();
-	}
 
 		public void EarlyFixedUpdateNetwork()
 		{
@@ -155,7 +154,7 @@ namespace TPSBR
 			Quaternion currentLookRotation = _character.CharacterController.FixedData.LookRotation;
 			if (_cachedLookRotation.ComponentEquals(currentLookRotation) == false)
 			{
-				_cachedLookRotation  = currentLookRotation;
+				_cachedLookRotation = currentLookRotation;
 				_cachedPitchRotation = Quaternion.Euler(_character.CharacterController.FixedData.LookPitch, 0.0f, 0.0f);
 			}
 
@@ -204,7 +203,7 @@ namespace TPSBR
 				Quaternion currentLookRotation = _character.CharacterController.RenderData.LookRotation;
 				if (_cachedLookRotation.ComponentEquals(currentLookRotation) == false)
 				{
-					_cachedLookRotation  = currentLookRotation;
+					_cachedLookRotation = currentLookRotation;
 					_cachedPitchRotation = Quaternion.Euler(_character.CharacterController.RenderData.LookPitch, 0.0f, 0.0f);
 				}
 
@@ -221,8 +220,8 @@ namespace TPSBR
 		{
 			// This method execution is sorted by LocalAlpha property passed in input and preserves realtime order of input actions.
 
-			bool attackWasActivated   = _agentInput.WasActivated(EGameplayInputAction.Attack);
-			bool reloadWasActivated   = _agentInput.WasActivated(EGameplayInputAction.Reload);
+			bool attackWasActivated = _agentInput.WasActivated(EGameplayInputAction.Attack);
+			bool reloadWasActivated = _agentInput.WasActivated(EGameplayInputAction.Reload);
 			bool interactWasActivated = _agentInput.WasActivated(EGameplayInputAction.Interact);
 
 			TryFire(attackWasActivated, _agentInput.FixedInput.Attack);
@@ -235,15 +234,15 @@ namespace TPSBR
 
 		private void Awake()
 		{
-			_agentInput   = GetComponent<AgentInput>();
+			_agentInput = GetComponent<AgentInput>();
 			_interactions = GetComponent<Interactions>();
-			_footsteps    = GetComponent<AgentFootsteps>();
-			_character    = GetComponent<Character>();
-			_weapons      = GetComponent<Weapons>();
-			_health       = GetComponent<Health>();
-			_agentVFX     = GetComponent<AgentVFX>();
-			_senses       = GetComponent<AgentSenses>();
-			_jetpack      = GetComponent<Jetpack>();
+			_footsteps = GetComponent<AgentFootsteps>();
+			_character = GetComponent<Character>();
+			_weapons = GetComponent<Weapons>();
+			_health = GetComponent<Health>();
+			_agentVFX = GetComponent<AgentVFX>();
+			_senses = GetComponent<AgentSenses>();
+			_jetpack = GetComponent<Jetpack>();
 			_interestView = GetComponent<AgentInterestView>();
 		}
 
@@ -251,7 +250,7 @@ namespace TPSBR
 
 		private void ProcessFixedInput()
 		{
-			KCC     kcc          = _character.CharacterController;
+			KCC kcc = _character.CharacterController;
 			KCCData kccFixedData = kcc.FixedData;
 
 			GameplayInput input = default;
@@ -322,8 +321,8 @@ namespace TPSBR
 
 		private void ProcessRenderInput()
 		{
-			KCC     kcc           = _character.CharacterController;
-			KCCData kccFixedData  = kcc.FixedData;
+			KCC kcc = _character.CharacterController;
+			KCCData kccFixedData = kcc.FixedData;
 
 			GameplayInput input = default;
 
@@ -334,8 +333,8 @@ namespace TPSBR
 				var accumulatedInput = _agentInput.AccumulatedInput;
 
 				input.LookRotationDelta = accumulatedInput.LookRotationDelta;
-				input.Aim               = accumulatedInput.Aim;
-				input.Thrust            = accumulatedInput.Thrust;
+				input.Aim = accumulatedInput.Aim;
+				input.Thrust = accumulatedInput.Thrust;
 			}
 
 			if (input.Aim == true)
@@ -424,7 +423,7 @@ namespace TPSBR
 			}
 
 			Vector2 baseLookRotation = kccData.GetLookRotation(true, true) - kccData.Recoil;
-			Vector2 recoilReduction  = Vector2.zero;
+			Vector2 recoilReduction = Vector2.zero;
 
 			if (recoil.x > 0f && lookRotationDelta.x < 0)
 			{
@@ -447,7 +446,7 @@ namespace TPSBR
 			}
 
 			lookRotationDelta -= recoilReduction;
-			recoil            += recoilReduction;
+			recoil += recoilReduction;
 
 			lookRotationDelta.x = Mathf.Clamp(baseLookRotation.x + lookRotationDelta.x, -_topCameraAngleLimit, _bottomCameraAngleLimit) - baseLookRotation.x;
 
@@ -492,15 +491,15 @@ namespace TPSBR
 
 			var hitData = new HitData
 			{
-				Action           = EHitAction.Damage,
-				Amount           = damage,
-				Position         = transform.position,
-				Normal           = Vector3.up,
-				Direction        = -Vector3.up,
-				InstigatorRef    = Object.InputAuthority,
-				Instigator       = _health,
-				Target           = _health,
-				HitType          = EHitType.Suicide,
+				Action = EHitAction.Damage,
+				Amount = damage,
+				Position = transform.position,
+				Normal = Vector3.up,
+				Direction = -Vector3.up,
+				InstigatorRef = Object.InputAuthority,
+				Instigator = _health,
+				Target = _health,
+				HitType = EHitType.Suicide,
 			};
 
 			(_health as IHitTarget).ProcessHit(ref hitData);
@@ -519,103 +518,118 @@ namespace TPSBR
 				_character.CharacterController.Collider.enabled = isActive;
 			}
 		}
-	
 
-	private void CreateNamePlate()
-	{
-		Debug.Log("[Agent] CreateNamePlate called for " + name);
 
-		// Don't show name plate for local player unless specified
-		if (HasInputAuthority && !_showLocalPlayerNamePlate)
+		private void CreateNamePlate()
 		{
-			Debug.Log("[Agent] Skipping name plate for local player");
-			return;
+			Debug.Log("[Agent] top of CreateNamePlate()");
+
+			// Don't show name plate for local player unless specified
+			if (HasInputAuthority && !_showLocalPlayerNamePlate)
+			{
+				Debug.Log("[Agent] Skipping name plate for local player");
+				return;
+			}
+
+			// Check if prefab is assigned
+			if (_namePlatePrefab == null)
+			{
+				Debug.LogWarning("[Agent] Name plate prefab is not assigned!");
+				return;
+			}
+
+			// Remove existing name plate first to prevent duplicates
+			DestroyNamePlate();
+
+			// Wait for character to be ready
+			if (_character == null || _character.ThirdPersonView == null || _character.ThirdPersonView.HeadTransform == null)
+			{
+				Debug.LogWarning("[Agent] Character or HeadTransform not ready for name plate creation");
+				return;
+			}
+
+			// Get camera - wait if not ready
+			Camera camera = Context?.Camera?.Camera;
+			if (camera == null)
+			{
+				Debug.LogWarning("[Agent] Camera not ready, will retry name plate creation");
+				return;
+			}
+
+			Debug.Log("[Agent] Creating name plate prefab instance");
+
+			// Instantiate name plate
+			_namePlate = Instantiate(_namePlatePrefab);
+			_namePlateTransform = _namePlate.transform;
+
+			// Get NamePlate component and initialize
+			var namePlateComponent = _namePlate.GetComponent<NamePlate>();
+			if (namePlateComponent != null)
+			{
+				// Get player name from PlayerData.Nickname
+				string playerName = "Player";
+
+				if (Context != null && Context.NetworkGame != null)
+				{
+					var player = Context.NetworkGame.GetPlayer(Object.InputAuthority);
+					if (player != null && !string.IsNullOrEmpty(player.Nickname))
+					{
+						playerName = player.Nickname;
+
+						// Remove \"[Player:X]\" suffix if present
+						int bracketIndex = playerName.IndexOf(" [");
+						if (bracketIndex > 0)
+						{
+							playerName = playerName.Substring(0, bracketIndex).Trim();
+						}
+
+						Debug.Log($"[Agent] Got nickname from PlayerData: {playerName}");
+					}
+					else
+					{
+						// Fallback to PlayerId if nickname is not available
+						playerName = $"Player {Object.InputAuthority.PlayerId}";
+						Debug.LogWarning($"[Agent] Could not get nickname, using fallback: {playerName}");
+					}
+				}
+				else
+				{
+					// Fallback to PlayerId if Context or NetworkGame is not available
+					playerName = $"Player {Object.InputAuthority.PlayerId}";
+					Debug.LogWarning("[Agent] Context or NetworkGame not available, using PlayerId");
+				}
+
+				Debug.Log($"[Agent] Final player name: {playerName}");
+				namePlateComponent.Initialize(this, playerName, camera);
+
+				// Set color based on Marine/Soldier
+				Color namePlateColor = GetNamePlateColor();
+				namePlateComponent.SetColor(namePlateColor);
+				Debug.Log("[Agent] Name plate created successfully with color: " + namePlateColor);
+			}
+			else
+			{
+				Debug.LogError("[Agent] Name plate prefab does not have NamePlate component!");
+				Destroy(_namePlate);
+				_namePlate = null;
+				_namePlateTransform = null;
+			}
 		}
 
-		// Check if prefab is assigned
-		if (_namePlatePrefab == null)
+		private Color GetNamePlateColor()
 		{
-			Debug.LogWarning("[Agent] Name plate prefab is not assigned!");
-			return;
+			return NamePlateManager.GetColorForAgent(gameObject);
 		}
 
-		// Remove existing name plate first to prevent duplicates
-		DestroyNamePlate();
-
-		// Wait for character to be ready
-		if (_character == null || _character.ThirdPersonView == null || _character.ThirdPersonView.HeadTransform == null)
+		private void DestroyNamePlate()
 		{
-			Debug.LogWarning("[Agent] Character or HeadTransform not ready for name plate creation");
-			return;
-		}
-
-		// Get camera - wait if not ready
-		Camera camera = Context?.Camera?.Camera;
-		if (camera == null)
-		{
-			Debug.LogWarning("[Agent] Camera not ready, will retry name plate creation");
-			// Could use a coroutine or delayed call here if needed
-			return;
-		}
-
-		Debug.Log("[Agent] Creating name plate prefab instance");
-
-		// Instantiate name plate
-		_namePlate = Instantiate(_namePlatePrefab);
-		_namePlateTransform = _namePlate.transform;
-
-		// Get NamePlate component and initialize
-		var namePlateComponent = _namePlate.GetComponent<NamePlate>();
-		if (namePlateComponent != null)
-		{
-			string playerName = Object.InputAuthority.ToString();
-			Debug.Log("[Agent] Initializing name plate with name: " + playerName);
-			namePlateComponent.Initialize(this, playerName, camera);
-
-			// Set color based on agent type (for now, using default white)
-			// TODO: Implement Marine/Soldier detection
-			Color namePlateColor = GetNamePlateColor();
-			namePlateComponent.SetColor(namePlateColor);
-			Debug.Log("[Agent] Name plate created successfully with color: " + namePlateColor);
-		}
-		else
-		{
-			Debug.LogError("[Agent] Name plate prefab does not have NamePlate component!");
-			Destroy(_namePlate);
-			_namePlate = null;
-			_namePlateTransform = null;
+			if (_namePlate != null)
+			{
+				Debug.Log("[Agent] Destroying name plate");
+				Destroy(_namePlate);
+				_namePlate = null;
+				_namePlateTransform = null;
+			}
 		}
 	}
-
-
-	private Color GetNamePlateColor()
-	{
-		// TODO: Implement proper Marine/Soldier detection
-		// For now, check game object name
-		string agentName = gameObject.name.ToLower();
-
-		if (agentName.Contains("marine"))
-		{
-			return _marineNameColor;
-		}
-		else if (agentName.Contains("soldier"))
-		{
-			return _soldierNameColor;
-		}
-
-		// Default to white for now
-		return Color.white;
-	}
-
-
-	private void DestroyNamePlate()
-	{
-		if (_namePlate != null)
-		{
-			Destroy(_namePlate);
-			_namePlate = null;
-			_namePlateTransform = null;
-		}
-	}
-}
 }

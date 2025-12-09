@@ -17,18 +17,35 @@ namespace TPSBR
         private bool _showLocalPlayerNamePlate = false;
 
         [SerializeField]
-        private Color _marineColor = new Color(0.2f, 0.5f, 1f); // Blue
-
-        [SerializeField]
-        private Color _soldierColor = new Color(1f, 0.3f, 0.2f); // Red
-
-        [SerializeField]
         private Color _defaultColor = Color.white;
 
         private Dictionary<Agent, NamePlate> _namePlates = new Dictionary<Agent, NamePlate>();
         private Transform _namePlateContainer;
 
         // PUBLIC METHODS
+
+        /// <summary>
+        /// Get color for agent based on type (Marine/Soldier)
+        /// This is the single source of truth for name plate colors
+        /// </summary>
+        public static Color GetColorForAgent(GameObject agentObject)
+        {
+            if (agentObject == null)
+                return Color.white;
+
+            string agentName = agentObject.name.Replace("(Clone)", "").Trim().ToLower();
+
+            if (agentName.Contains("marine"))
+            {
+                return new Color(1f, 0.3f, 0.2f); // Red
+            }
+            else if (agentName.Contains("soldier"))
+            {
+                return new Color(0.2f, 0.3f, 0.8f); // Dark Blue
+            }
+
+            return Color.white;
+        }
 
         public NamePlate CreateNamePlate(Agent agent)
         {
@@ -137,20 +154,7 @@ namespace TPSBR
             if (agent == null)
                 return _defaultColor;
 
-            // TODO: Implement Marine/Soldier detection
-            // For now, use game object name to determine type
-            string agentName = agent.gameObject.name.ToLower();
-
-            if (agentName.Contains("marine"))
-            {
-                return _marineColor;
-            }
-            else if (agentName.Contains("soldier"))
-            {
-                return _soldierColor;
-            }
-
-            return _defaultColor;
+            return GetColorForAgent(agent.gameObject);
         }
 
         // MonoBehaviour INTERFACE
