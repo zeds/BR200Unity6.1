@@ -73,6 +73,8 @@ public override void Spawned()
 			_sortedUpdateInvoker = Runner.GetSingleton<SortedUpdateInvoker>();
 
 			_visualRoot.SetActive(true);
+			Debug.Log($"[Agent] Setting _visualRoot active - InputAuthority: {Object.InputAuthority}, HasInputAuthority: {HasInputAuthority}, _visualRoot: {_visualRoot != null}");
+
 
 			_character.OnSpawned(this);
 			_jetpack.OnSpawned(this);
@@ -541,9 +543,12 @@ private void Awake()
 			(_health as IHitTarget).ProcessHit(ref hitData);
 		}
 
-		private void OnCullingUpdated(bool isCulled)
+private void OnCullingUpdated(bool isCulled)
 		{
 			bool isActive = isCulled == false;
+
+			// デバッグログを追加
+			Debug.Log($"[Agent] OnCullingUpdated called - InputAuthority: {Object.InputAuthority}, isCulled: {isCulled}, isActive: {isActive}, position: {transform.position}");
 
 			// Show/hide the game object based on AoI (Area of Interest)
 
