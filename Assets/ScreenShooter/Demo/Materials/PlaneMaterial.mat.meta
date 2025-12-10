@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9807f6bd4086d404b9f0782d38623d44
+timeCreated: 1455706282
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 58659
+  packageName: ScreenShooter
+  packageVersion: 1.4
+  assetPath: Assets/ScreenShooter/Demo/Materials/PlaneMaterial.mat
+  uploadId: 291333

@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: c748a4f5a7d1ccb48ac378838d227d4f
+timeCreated: 1481219632
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 58659
+  packageName: ScreenShooter
+  packageVersion: 1.4
+  assetPath: Assets/ScreenShooter/Editor/Scripts/Info/AssetInfo.cs
+  uploadId: 291333

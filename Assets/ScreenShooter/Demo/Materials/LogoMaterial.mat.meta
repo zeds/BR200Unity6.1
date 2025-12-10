@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1a0f5f6cef319b143a2f9d19d973246d
+timeCreated: 1457391343
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 58659
+  packageName: ScreenShooter
+  packageVersion: 1.4
+  assetPath: Assets/ScreenShooter/Demo/Materials/LogoMaterial.mat
+  uploadId: 291333

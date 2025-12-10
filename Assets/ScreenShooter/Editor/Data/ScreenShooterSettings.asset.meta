@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 50730d3b5a992904fb97ad7b47698d78
+timeCreated: 1481389145
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 58659
+  packageName: ScreenShooter
+  packageVersion: 1.4
+  assetPath: Assets/ScreenShooter/Editor/Data/ScreenShooterSettings.asset
+  uploadId: 291333

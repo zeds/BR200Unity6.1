@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5237440f30e8cfa4696ff633fffcdc41
+timeCreated: 1457391303
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 58659
+  packageName: ScreenShooter
+  packageVersion: 1.4
+  assetPath: Assets/ScreenShooter/Demo/Materials/Materials/borodar_logo_512.mat
+  uploadId: 291333
